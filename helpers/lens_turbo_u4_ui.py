@@ -925,10 +925,10 @@ class LensTurboWindow(QMainWindow):
         <div style="font-size: 15px; line-height: 1.45;">
             <h2>Get Going Fast | Lens Turbo</h2>
             <p>Built for rapid local generation with help from <b>DJ Grizzly</b>.<br>
-            <a href="https://github.com/Koongrizzly">https://github.com/Koongrizzly</a> / 
+            <a href="https://github.com/Koongrizzly">https://github.com/Koongrizzly</a> /
             <a href="https://www.youtube.com/@dj__grizzly">https://www.youtube.com/@dj__grizzly</a></p>
             <p><b>The A.i. Hobby Guy</b><br>
-            <a href="https://discord.gg/3freTyckU">https://discord.gg/3freTyckU</a> / 
+            <a href="https://discord.gg/3freTyckU">https://discord.gg/3freTyckU</a> /
             <a href="https://www.youtube.com/@TheAIHobbyGuy">https://www.youtube.com/@TheAIHobbyGuy</a></p>
             <p><i>Clicking a link needs internet connection and will open a web browser</i></p>
         </div>
