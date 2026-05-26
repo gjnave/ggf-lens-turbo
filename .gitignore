@@ -1,0 +1,19 @@
+# Installed environments, package caches, and downloaded model repositories/weights.
+venv/
+environments/
+models/
+pip_cache/
+tmp/
+temp/
+__pycache__/
+*.py[cod]
+
+# Generated images, local settings/prompts, and runtime logs.
+output/
+logs/
+presets/setsave/*.json
+
+# Local editor/system artifacts.
+.DS_Store
+Thumbs.db
+*.log

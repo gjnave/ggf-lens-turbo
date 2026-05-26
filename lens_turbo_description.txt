@@ -1,0 +1,23 @@
+Lens Turbo U4 is a standalone, one click install desktop image-generation tool built around the Lens-Turbo-SDNQ-uint4-static model by Wavecut  
+https://huggingface.co/WaveCut/Lens-Turbo-SDNQ-uint4-static
+original model :  https://huggingface.co/microsoft/Lens-Turbo
+
+The app gives users a clean prompt workflow with negative prompts, seed control, random seed mode, batch creation
+and an integrated queue so new jobs can be added while another image is still generating.
+
+The app includes a dedicated Queue tab where users can follow running, pending, finished, and failed jobs. 
+Pending jobs are saved and restored after restart
+and the last 10 finished jobs are remembered as well. 
+Right-click actions make it easy to cancel jobs, open finished images, open their folder, or delete generated files.
+
+Generation settings are kept simple. 
+Users can choose an aspect ratio, use official Lens base-resolution presets, 
+or switch to custom resolution mode with safe 32-step width and height controls. 
+Custom sizes are limited to 2560 × 1440, and the UI warns when going above the model’s normal base-resolution range 
+because higher custom sizes may create artifacts or cloned objects.
+
+The app is designed to be portable and offline-friendly. 
+First time will use needs internet connection to download kernels and models, so the first genertion will be very slow.
+
+
+The UI also includes multiple themes and tooltips are included throughout the interface, preview panel, live log output, output-folder shortcut, used-seed display and more.
