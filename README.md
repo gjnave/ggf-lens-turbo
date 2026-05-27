@@ -65,16 +65,16 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
 </li>
 
 <li>
-  Download the required kernel files into:
+  Download the Lens Turbo model files from:
   <br>
-  <code>models\lens\kernels_cache\kernels--kernels-community--gpt-oss-triton-kernels</code>
+  <code>https://huggingface.co/WaveCut/Lens-Turbo-SDNQ-uint4-static</code>
 </li>
 
-  <li>
-    Clone the Microsoft Lens repository:
-    <br>
-    <code>git clone https://github.com/microsoft/Lens.git models\lens\repos\Lens</code>
-  </li>
+<li>
+  Download the kernel files from:
+  <br>
+  <code>https://huggingface.co/kernels-community/gpt-oss-triton-kernels</code>
+</li>
 
   <li>
     Run the app:
@@ -82,3 +82,12 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
     <code>python app.py</code>
   </li>
 </ol>
+
+
+<pre><code>ggf-lens-turbo
+└── models
+    └── lens
+        ├── hf_cache
+        │   └── models--WaveCut--Lens-Turbo-SDNQ-uint4-static
+        └── kernels_cache
+            └── kernels--kernels-community--gpt-oss-triton-kernels</code></pre>
