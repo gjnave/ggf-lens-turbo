@@ -993,6 +993,8 @@ class LensTurboWindow(QMainWindow):
         self.theme_combo.currentTextChanged.connect(self.on_theme_changed)
         self.save_btn = QPushButton("Save Settings")
         self.save_btn.clicked.connect(self.save_settings)
+        self.check_env_btn = QPushButton("Check Environment")
+        self.check_env_btn.clicked.connect(self.check_environment)
         self.info_btn = QPushButton("Info")
         self.info_btn.clicked.connect(self.show_info_popup)
 
@@ -1016,6 +1018,7 @@ class LensTurboWindow(QMainWindow):
         settings_button_layout = QHBoxLayout(settings_button_row)
         settings_button_layout.setContentsMargins(0, 0, 0, 0)
         settings_button_layout.addWidget(self.save_btn)
+        settings_button_layout.addWidget(self.check_env_btn)
         settings_button_layout.addWidget(self.info_btn)
         settings_button_layout.addStretch(1)
         settings_layout.addWidget(settings_button_row)
@@ -1356,6 +1359,48 @@ class LensTurboWindow(QMainWindow):
         self.apply_theme(theme_name)
         if not self._loading_settings:
             self.save_settings()
+
+    def check_environment(self) -> None:
+        self.append_log("--- Environment Check ---")
+        try:
+            import torch
+            self.append_log(f"Torch: {torch.__version__}")
+            self.append_log(f"CUDA Available: {torch.cuda.is_available()}")
+            if torch.cuda.is_available():
+                self.append_log(f"GPU: {torch.cuda.get_device_name(0)}")
+                self.append_log(f"CUDA Version: {torch.version.cuda}")
+            else:
+                self.append_log("WARNING: CUDA not detected by PyTorch.")
+
+            try:
+                import triton
+                self.append_log(f"Triton: {getattr(triton, '__version__', 'detected')}")
+            except ImportError:
+                self.append_log("ERROR: Triton not found.")
+
+            try:
+                import kernels
+                self.append_log("Kernels: detected")
+            except ImportError:
+                self.append_log("ERROR: Kernels package not found.")
+
+            try:
+                import sdnq
+                self.append_log("SDNQ: detected")
+            except ImportError:
+                self.append_log("ERROR: SDNQ not found.")
+
+            import diffusers
+            self.append_log(f"Diffusers: {diffusers.__version__}")
+
+            import transformers
+            self.append_log(f"Transformers: {transformers.__version__}")
+
+            self.append_log("Environment check complete.")
+            QMessageBox.information(self, "Environment Check", "Environment check complete. See the Log in the Generate tab for details.")
+        except Exception as e:
+            self.append_log(f"Environment check failed: {e}")
+            QMessageBox.critical(self, "Environment Check", f"Environment check failed:\n{e}")
 
     def browse_output_dir(self) -> None:
         chosen = QFileDialog.getExistingDirectory(self, "Select output folder", self.output_edit.text() or str(self.root / "output"))
