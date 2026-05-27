@@ -1,0 +1,1 @@
+call "model-download.py" || goto :error
