@@ -4,6 +4,7 @@ cd /d "%~dp0"
 
 set "REPO_URL=https://github.com/gjnave/ggf-lens-turbo.git"
 set "APP_DIR=%CD%\ggf-lens-turbo"
+set "ARIA2=%CD%\aria2c.exe"
 if exist "%CD%\requirements.txt" set "APP_DIR=%CD%"
 
 if exist "disclaimer.md" (
@@ -44,6 +45,8 @@ set "HF_MODULES_CACHE=%APP_DIR%\models\lens\hf_modules"
 set "TRITON_CACHE_DIR=%APP_DIR%\models\lens\triton_cache"
 set "KERNELS_CACHE=%APP_DIR%\models\lens\kernels_cache"
 set "TORCH_HOME=%APP_DIR%\models\lens\torch_home"
+set "TMP_DIR=%APP_DIR%\tmp"
+if not exist "%TMP_DIR%" mkdir "%TMP_DIR%"
 
 echo Installing Python packages...
 "%PY%" -m pip install --upgrade pip wheel || goto :error
@@ -60,16 +63,50 @@ if not exist "models\lens\repos\Lens\lens" (
     echo Microsoft Lens is already present.
 )
 
-echo Downloading Lens Turbo model...
-"%PY%" -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='WaveCut/Lens-Turbo-SDNQ-uint4-static', cache_dir=r'%HF_HUB_CACHE%')" || goto :error
-
-echo Preparing quantized GPU kernels...
-"%PY%" -c "from kernels import get_kernel; get_kernel('kernels-community/gpt-oss-triton-kernels', version=1, trust_remote_code=True)" || goto :error
+call :download_hf_repo "WaveCut/Lens-Turbo-SDNQ-uint4-static" "%HF_HUB_CACHE%\models--WaveCut--Lens-Turbo-SDNQ-uint4-static" "model" || goto :error
+call :download_hf_repo "kernels-community/gpt-oss-triton-kernels" "%KERNELS_CACHE%\kernels--kernels-community--gpt-oss-triton-kernels" "kernel" || goto :error
 
 popd
 echo.
 echo Done. Run run.bat.
 pause
+exit /b 0
+
+:download_hf_repo
+set "HF_REPO=%~1"
+set "HF_DEST=%~2"
+set "HF_KIND=%~3"
+set "HF_META_JSON=%TMP_DIR%\%HF_KIND%-meta.json"
+set "HF_URLS_TXT=%TMP_DIR%\%HF_KIND%-urls.txt"
+set "HF_REF_FILE=%HF_DEST%\refs\main"
+set "HF_MANIFEST_SCRIPT=%APP_DIR%\helpers\build_hf_manifest.ps1"
+
+if exist "%HF_REF_FILE%" (
+    echo %HF_KIND% cache already present for %HF_REPO%.
+    exit /b 0
+)
+
+echo Downloading %HF_KIND% file list for %HF_REPO%...
+curl.exe -L --fail --output "%HF_META_JSON%" "https://huggingface.co/api/models/%HF_REPO%" >nul || exit /b 1
+powershell -NoProfile -ExecutionPolicy Bypass -File "%HF_MANIFEST_SCRIPT%" -Repo "%HF_REPO%" -Dest "%HF_DEST%" -MetaJson "%HF_META_JSON%" -UrlsTxt "%HF_URLS_TXT%" || exit /b 1
+
+echo Downloading %HF_KIND% files for %HF_REPO%...
+if exist "%ARIA2%" (
+    "%ARIA2%" --continue=true --auto-file-renaming=false --allow-overwrite=true --max-connection-per-server=8 --split=8 --input-file="%HF_URLS_TXT%" || exit /b 1
+) else (
+    echo aria2c.exe not found. Falling back to curl...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "$lines=Get-Content -LiteralPath '%HF_URLS_TXT%'; for($i=0; $i -lt $lines.Count; $i+=3){ $url=$lines[$i]; $dir=$lines[$i+1].Substring(6); $name=$lines[$i+2].Substring(6); $out=Join-Path $dir $name; curl.exe -L --fail --output $out $url; if($LASTEXITCODE -ne 0){ exit $LASTEXITCODE } }" || exit /b 1
+)
+exit /b 0
+
+:fetch_file
+set "FETCH_URL=%~1"
+set "FETCH_OUT=%~2"
+if exist "%ARIA2%" (
+    "%ARIA2%" --continue=true --auto-file-renaming=false --allow-overwrite=true --dir="%~dp2" --out="%~nx2" "%FETCH_URL%" >nul || exit /b 1
+) else (
+    curl.exe -L --fail --output "%FETCH_OUT%" "%FETCH_URL%" >nul || exit /b 1
+)
 exit /b 0
 
 :error

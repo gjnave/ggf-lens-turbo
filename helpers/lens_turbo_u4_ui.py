@@ -69,24 +69,148 @@ CUSTOM_RESOLUTION_LABEL = "Custom"
 
 THEMES = {
     "Get Going Fast": """
-        QWidget { background-color: #0a0a0a; color: #f0f0f0; font-family: "Segoe UI", Arial, sans-serif; }
-        QMainWindow, QTabWidget::pane, QScrollArea { background-color: #0a0a0a; }
-        QLabel#brandTitle { color: #00e676; font-size: 22px; font-weight: 700; letter-spacing: 1px; }
-        QLabel#brandSubtitle { color: #b0b0b0; font-size: 12px; }
-        QLabel#brandLink { color: #f0f0f0; }
-        QLabel#brandLink a { color: #00e676; }
-        QGroupBox { background-color: #1a1a1a; border: 1px solid #343434; border-radius: 12px; margin-top: 12px; padding-top: 10px; font-weight: 600; }
-        QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 6px; color: #00e676; background-color: #0a0a0a; }
-        QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QListWidget { background-color: #141414; color: #f0f0f0; border: 1px solid #4a4a4a; border-radius: 8px; padding: 5px; selection-background-color: #00e676; selection-color: #07130b; }
-        QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus { border: 1px solid #00e676; }
-        QPushButton { background-color: #00e676; color: #07130b; border: 1px solid #00e676; border-radius: 9px; padding: 7px 12px; font-weight: 600; }
-        QPushButton:hover { background-color: #35f18b; }
-        QPushButton:pressed { background-color: #00bd60; }
-        QPushButton:disabled { color: #7c887f; background-color: #242824; border-color: #3b453d; }
-        QTabBar::tab { background-color: #1a1a1a; color: #b0b0b0; padding: 9px 15px; border: 1px solid #343434; border-bottom: none; border-top-left-radius: 9px; border-top-right-radius: 9px; }
-        QTabBar::tab:selected { background-color: #202820; color: #00e676; border-color: #00e676; }
-        QTabBar::tab:hover { color: #f0f0f0; }
-        QCheckBox { spacing: 7px; }
+        QWidget {
+            background-color: #fbf6eb;
+            color: #14120f;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 10pt;
+        }
+        QMainWindow, QTabWidget::pane, QScrollArea {
+            background-color: #fbf6eb;
+            border: none;
+        }
+        QWidget#brandHero {
+            border: 1px solid rgba(20, 18, 15, 0.12);
+            border-radius: 8px;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgba(20, 18, 15, 245), stop:1 rgba(23, 76, 98, 232));
+        }
+        QLabel#brandBadge {
+            min-width: 44px;
+            max-width: 44px;
+            min-height: 44px;
+            max-height: 44px;
+            background-color: #d83b2a;
+            color: #fff8ec;
+            border-radius: 8px;
+            font-family: "Segoe UI Black", "Segoe UI", Arial, sans-serif;
+            font-weight: 900;
+            font-size: 15px;
+            padding-top: 10px;
+        }
+        QLabel#brandKicker {
+            color: #f5c35d;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 1px;
+            background: transparent;
+        }
+        QLabel#brandTitle {
+            color: #fff8ec;
+            font-family: "Segoe UI Black", "Arial Black", "Segoe UI", Arial, sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            background: transparent;
+        }
+        QLabel#brandSubtitle {
+            color: #f4ead7;
+            font-size: 14px;
+            background: transparent;
+        }
+        QLabel#brandLink, QLabel#brandLink a {
+            color: #fff8ec;
+            font-size: 12px;
+            background: transparent;
+        }
+        QLabel#brandChip {
+            border: 1px solid rgba(255, 248, 236, 0.22);
+            border-radius: 999px;
+            padding: 6px 10px;
+            color: #fff8ec;
+            background-color: rgba(255, 248, 236, 0.08);
+            font-size: 12px;
+        }
+        QGroupBox {
+            background-color: rgba(255, 252, 245, 0.94);
+            border: 1px solid #d8d0c3;
+            border-radius: 8px;
+            margin-top: 12px;
+            padding-top: 10px;
+            font-weight: 700;
+            color: #174c62;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 12px;
+            padding: 0 6px;
+            color: #174c62;
+            background-color: #fbf6eb;
+        }
+        QLabel {
+            background: transparent;
+        }
+        QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QListWidget {
+            background-color: #fffaf0;
+            color: #14120f;
+            border: 1px solid #d8d0c3;
+            border-radius: 8px;
+            padding: 5px;
+            selection-background-color: #d83b2a;
+            selection-color: #fff8ec;
+        }
+        QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+            border: 1px solid #d83b2a;
+        }
+        QPushButton {
+            background-color: #fffaf0;
+            color: #14120f;
+            border: 1px solid #cfc3af;
+            border-radius: 8px;
+            padding: 7px 12px;
+            font-weight: 800;
+        }
+        QPushButton:hover {
+            background-color: #f4ead7;
+        }
+        QPushButton:pressed {
+            background-color: #eadabd;
+        }
+        QPushButton:disabled {
+            color: #8d8578;
+            background-color: #f0e9dc;
+            border-color: #d8d0c3;
+        }
+        QPushButton#primaryAction {
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #e24a38, stop:1 #d83b2a);
+            color: #fff8ec;
+            border: 1px solid #b92f22;
+            font-family: "Segoe UI Black", "Segoe UI", Arial, sans-serif;
+            font-weight: 900;
+        }
+        QPushButton#primaryAction:hover {
+            background: #e24a38;
+        }
+        QTabBar::tab {
+            background-color: #f4ead7;
+            color: #665f52;
+            padding: 9px 15px;
+            border: 1px solid #d8d0c3;
+            border-bottom: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-weight: 800;
+        }
+        QTabBar::tab:selected {
+            background-color: #fff9ed;
+            color: #174c62;
+            border-color: #174c62;
+        }
+        QTabBar::tab:hover {
+            color: #14120f;
+        }
+        QCheckBox {
+            spacing: 7px;
+        }
     """,
     "Dark": """
         QWidget { background-color: #1f1f1f; color: #eeeeee; }
@@ -574,7 +698,7 @@ class LensTurboWindow(QMainWindow):
         self.settings_path = self.root / "presets" / "setsave" / "lens_turbo_u4_ui.json"
         self.pending_jobs_path = self.root / "presets" / "setsave" / "lens_turbo_u4_pending_jobs.json"
         self._loading_settings = False
-        self.setWindowTitle("Get Going Fast | Lens Turbo U4")
+        self.setWindowTitle("Get Going Fast | Lens Turbo U4 Studio")
         self.resize(1360, 900)
         self.build_ui()
         self.apply_defaults()
@@ -588,21 +712,56 @@ class LensTurboWindow(QMainWindow):
         central = QWidget()
         self.setCentralWidget(central)
         outer = QVBoxLayout(central)
-        brand_row = QHBoxLayout()
+        outer.setContentsMargins(14, 14, 14, 14)
+        outer.setSpacing(14)
+
+        brand_hero = QWidget()
+        brand_hero.setObjectName("brandHero")
+        brand_hero.setMinimumHeight(142)
+        brand_row = QHBoxLayout(brand_hero)
+        brand_row.setContentsMargins(30, 24, 30, 24)
+        brand_row.setSpacing(18)
+
         brand_text = QVBoxLayout()
-        self.brand_title = QLabel("GET GOING FAST  /  LENS TURBO")
+        brand_text.setSpacing(6)
+        self.brand_badge = QLabel("GGF")
+        self.brand_badge.setAlignment(Qt.AlignCenter)
+        self.brand_badge.setObjectName("brandBadge")
+        self.brand_kicker = QLabel("GET GOING FAST")
+        self.brand_kicker.setObjectName("brandKicker")
+        self.brand_title = QLabel("Lens Turbo U4 Studio")
         self.brand_title.setObjectName("brandTitle")
-        self.brand_subtitle = QLabel("Rapid local image generation | Resident GPU pipeline by default")
+        self.brand_subtitle = QLabel("Standalone local CUDA image generation for Lens Turbo U4. Built for the Get Going Fast method, with no ComfyUI required after install.")
+        self.brand_subtitle.setWordWrap(True)
         self.brand_subtitle.setObjectName("brandSubtitle")
-        self.brand_link = QLabel('With the help of DJ Grizzly  |  <a href="https://www.youtube.com/@dj__grizzly">YouTube channel</a>')
+        self.brand_link = QLabel('Built with DJ Grizzly  |  <a href="https://www.youtube.com/@dj__grizzly">YouTube</a>  |  <a href="https://www.youtube.com/@TheAIHobbyGuy">The AI Hobby Guy</a>')
         self.brand_link.setObjectName("brandLink")
         self.brand_link.setOpenExternalLinks(True)
+
+        brand_lockup = QHBoxLayout()
+        brand_lockup.setContentsMargins(0, 0, 0, 0)
+        brand_lockup.setSpacing(10)
+        brand_lockup.addWidget(self.brand_badge)
+        brand_lockup.addWidget(self.brand_kicker)
+        brand_lockup.addStretch(1)
+
+        chip_row = QHBoxLayout()
+        chip_row.setContentsMargins(0, 6, 0, 0)
+        chip_row.setSpacing(8)
+        for chip_text in ("CUDA required", "Local model files", "Fast resident-GPU mode", "GGF standalone app"):
+            chip = QLabel(chip_text)
+            chip.setObjectName("brandChip")
+            chip_row.addWidget(chip)
+        chip_row.addStretch(1)
+
+        brand_text.addLayout(brand_lockup)
         brand_text.addWidget(self.brand_title)
         brand_text.addWidget(self.brand_subtitle)
-        brand_row.addLayout(brand_text)
-        brand_row.addStretch(1)
-        brand_row.addWidget(self.brand_link)
-        outer.addLayout(brand_row)
+        brand_text.addLayout(chip_row)
+        brand_row.addLayout(brand_text, 1)
+        brand_row.addWidget(self.brand_link, 0, Qt.AlignTop | Qt.AlignRight)
+
+        outer.addWidget(brand_hero)
         self.tabs = QTabWidget()
         outer.addWidget(self.tabs)
 
@@ -711,6 +870,7 @@ class LensTurboWindow(QMainWindow):
         buttons_layout = QHBoxLayout(buttons)
         buttons_layout.setContentsMargins(0, 0, 0, 0)
         self.generate_btn = QPushButton("Add to Queue")
+        self.generate_btn.setObjectName("primaryAction")
         self.stop_btn = QPushButton("Stop Current")
         self.stop_btn.setEnabled(False)
         self.open_output_btn = QPushButton("Open Output Folder")
@@ -892,7 +1052,7 @@ class LensTurboWindow(QMainWindow):
             self.output_browse_btn: "Choose a different output folder.",
             self.repo_path_edit: "Local Lens repo path. Normally keep this at models/lens/repos/Lens.",
             self.python_label: "Python environment used to run Lens.",
-            self.theme_combo: "UI theme. Default: Get Going Fast, using the Get Going Fast surface and green accent palette.",
+            self.theme_combo: "UI theme. Default: Get Going Fast, using the same cream surface, red action buttons, blue header, and gold kicker from the GGF Z-Image app.",
             self.dtype_combo: "Model dtype. Default: bfloat16. Keep this unless the backend changes.",
             self.hf_token_edit: "Optional Hugging Face token. Usually not needed for public cached models.",
             self.max_seq_spin: "Maximum text sequence length. Default: 512. Higher values allow longer prompts but may use more memory.",
@@ -923,11 +1083,11 @@ class LensTurboWindow(QMainWindow):
         browser.setOpenExternalLinks(True)
         browser.setHtml("""
         <div style="font-size: 15px; line-height: 1.45;">
-            <h2>Get Going Fast | Lens Turbo</h2>
+            <h2>Get Going Fast | Lens Turbo U4 Studio</h2>
             <p>Built for rapid local generation with help from <b>DJ Grizzly</b>.<br>
             <a href="https://github.com/Koongrizzly">https://github.com/Koongrizzly</a> /
             <a href="https://www.youtube.com/@dj__grizzly">https://www.youtube.com/@dj__grizzly</a></p>
-            <p><b>The A.i. Hobby Guy</b><br>
+            <p><b>The AI Hobby Guy</b><br>
             <a href="https://discord.gg/3freTyckU">https://discord.gg/3freTyckU</a> /
             <a href="https://www.youtube.com/@TheAIHobbyGuy">https://www.youtube.com/@TheAIHobbyGuy</a></p>
             <p><i>Clicking a link needs internet connection and will open a web browser</i></p>
@@ -1175,6 +1335,8 @@ class LensTurboWindow(QMainWindow):
         if hasattr(self, "image_preview"):
             if theme == "Light":
                 self.image_preview.setStyleSheet("border:1px solid #b0b0b0; background:#ffffff; color:#202020;")
+            elif theme == "Get Going Fast":
+                self.image_preview.setStyleSheet("border:1px solid #d8d0c3; background:#fffaf0; color:#665f52;")
             else:
                 self.image_preview.setStyleSheet("border:1px solid #555; background:#202020; color:#ddd;")
 
