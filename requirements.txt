@@ -6,7 +6,7 @@ diffusers==0.38.0
 einops==0.8.2
 huggingface_hub==1.16.1
 kernels==0.14.1
-numpy==2.2.6
+numpy==2.4.4
 peft==0.19.1
 pillow==12.2.0
 protobuf==7.35.0
