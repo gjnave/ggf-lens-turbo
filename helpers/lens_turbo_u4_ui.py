@@ -296,7 +296,18 @@ def root_dir() -> Path:
 
 
 def env_python(root: Path) -> Path:
+    # Check for conda env first
+    conda_env_path = root / "environments" / "conda"
+    if conda_env_path.exists():
+        p1 = conda_env_path / "python.exe"
+        p2 = conda_env_path / "Scripts" / "python.exe"
+        if p1.exists(): return p1
+        if p2.exists(): return p2
+
+    # Fallback to venv
     env = root / "environments" / ".lens_turbo_u4"
+    if not env.exists():
+        env = root / "venv"
     p1 = env / "python.exe"
     p2 = env / "Scripts" / "python.exe"
     return p1 if p1.exists() else p2
@@ -975,7 +986,8 @@ class LensTurboWindow(QMainWindow):
         self.api_key_edit = QLineEdit()
         self.api_key_edit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
         self.api_model_edit = QLineEdit()
-        self.python_label = QLabel(str(env_python(self.root)))
+        self.python_label = QLineEdit(str(env_python(self.root)))
+        self.python_label.setReadOnly(True)
         self.theme_combo = QComboBox()
         self.theme_combo.addItems(list(THEMES.keys()))
         self.theme_combo.currentTextChanged.connect(self.on_theme_changed)

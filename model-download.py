@@ -16,6 +16,7 @@ import os
 import sys
 import time
 import urllib.error
+import subprocess
 import urllib.request
 from pathlib import Path
 from typing import Iterable
@@ -71,6 +72,28 @@ def download_file(url: str, out_path: Path, retries: int = 4) -> None:
     if out_path.exists() and out_path.stat().st_size > 0:
         print(f"  exists: {out_path.name}")
         return
+
+    aria2c_bin = APP_DIR / "aria2c.exe"
+    if aria2c_bin.exists():
+        print(f"  downloading with aria2c: {out_path.name}")
+        try:
+            cmd = [
+                str(aria2c_bin),
+                "--console-log-level=warn",
+                "--summary-interval=10",
+                "-x", "10",
+                "-s", "10",
+                "-j", "10",
+                "-k", "1M",
+                "--continue=true",
+                "--dir", str(out_path.parent),
+                "--out", out_path.name,
+                url
+            ]
+            subprocess.run(cmd, check=True)
+            return
+        except subprocess.CalledProcessError as exc:
+            print(f"  aria2c failed for {out_path.name}, falling back to urllib: {exc}")
 
     tmp_path = out_path.with_suffix(out_path.suffix + ".part")
 
