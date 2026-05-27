@@ -58,23 +58,7 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
     <code>python -m pip install -r requirements.txt</code>
   </li>
 
-<li>
-  Download the required model files into:
-  <br>
-  <code>models\lens\hf_cache\models--WaveCut--Lens-Turbo-SDNQ-uint4-static</code>
-</li>
-
-<li>
-  Download the Lens Turbo model files from:
-  <br>
-  <code>https://huggingface.co/WaveCut/Lens-Turbo-SDNQ-uint4-static</code>
-</li>
-
-<li>
-  Download the kernel files from:
-  <br>
-  <code>https://huggingface.co/kernels-community/gpt-oss-triton-kernels</code>
-</li>
+<li>Run the model-downloader.bat</li>
 
   <li>
     Run the app:
