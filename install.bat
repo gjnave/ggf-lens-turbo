@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 chcp 65001 >nul
 cd /d "%~dp0"
 
-echo Get Going Fast | Lens Turbo | Conda Installer
+echo "Get Going Fast | Lens Turbo | Conda Installer"
 echo =============================================
 echo.
 
