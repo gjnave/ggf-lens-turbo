@@ -35,15 +35,15 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
   </li>
 
   <li>
-    Create a Python 3.11 virtual environment:
+    Create a Conda 3.11 virtual environment:
     <br>
-    <code>py -3.11 -m venv venv</code>
+<code>call conda create -n mslens python=3.11 -y</code>code>
   </li>
 
   <li>
     Activate the virtual environment:
     <br>
-    <code>venv\Scripts\activate</code>
+    <code>call conda activate mslens</code>
   </li>
 
   <li>
