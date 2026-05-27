@@ -2,11 +2,13 @@ Get Going Fast | Lens Turbo
 ===========================
 
 Install:
-1. Install Python 3.11, Git, and an NVIDIA driver capable of running CUDA PyTorch.
-2. Run install.bat.
-3. Run run.bat.
+1. Put `disclaimer.md`, `about.nfo`, `install.bat`, and `run.bat` in one folder.
+2. Install Python 3.11, Git, and an NVIDIA driver capable of running CUDA PyTorch.
+3. Run `install.bat`.
+4. Run `run.bat`.
 
 That is all the installer does:
+- clones the public `ggf-lens-turbo` repo if the full app is not already present
 - creates venv/
 - installs pinned, tested dependencies
 - installs CUDA PyTorch from the official cu128 wheel index
