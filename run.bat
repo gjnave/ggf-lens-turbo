@@ -3,9 +3,25 @@ setlocal
 chcp 65001 >nul
 cd /d "%~dp0"
 
+set HF_HUB_DISABLE_XET=1
+set HF_HUB_DOWNLOAD_TIMEOUT=60
+set HF_HUB_ETAG_TIMEOUT=60
+
 set "APP_DIR=%CD%\ggf-lens-turbo"
 if exist "%CD%\helpers\lens_turbo_u4_ui.py" set "APP_DIR=%CD%"
-set "VENV_PY=%APP_DIR%\venv\Scripts\python.exe"
+
+:: Check for Conda environment first
+set "CONDA_ENV=%APP_DIR%\environments\conda"
+set "VENV_PY=%CONDA_ENV%\python.exe"
+
+if not exist "%VENV_PY%" (
+    :: Fallback to traditional venv
+    set "VENV_PY=%APP_DIR%\venv\Scripts\python.exe"
+)
+
+if not exist "%VENV_PY%" (
+    set "VENV_PY=%APP_DIR%\environments\.lens_turbo_u4\Scripts\python.exe"
+)
 
 if not exist "%APP_DIR%\helpers\lens_turbo_u4_ui.py" (
     echo [ERROR] App files not found. Run install.bat first.

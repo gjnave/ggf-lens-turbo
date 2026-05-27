@@ -35,15 +35,15 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
   </li>
 
   <li>
-    Create a Python 3.11 venv (if you dont have 3.11 then use chatgpt to fix the dpeendencies):
+    Create a Python 3.11 environment using Conda (recommended):
     <br>
-<code>py -3.11 -m venv venv</code>
+<code>conda create -p ./environments/conda python=3.11 -y</code>
   </li>
 
   <li>
-    Activate the virtual environment:
+    Activate the environment:
     <br>
-    <code>call venv\scripts\activate</code>
+    <code>conda activate ./environments/conda</code>
   </li>
 
   <li>
@@ -53,7 +53,7 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
     <br>
     <code>python -m pip install setuptools==70.2.0</code>
     <br>
-    <code>python -m pip install "torch&gt;=2.8.0,&lt;2.12" torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128</code>
+    <code>python -m pip install "torch&gt;=2.4.0,&lt;2.6" torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code>
     <br>
     <code>python -m pip install -r requirements.txt</code>
   </li>
