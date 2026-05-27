@@ -12,8 +12,11 @@ The desktop app now defaults to resident GPU mode: the loaded Lens pipeline rema
 
 ## Run
 
-1. Run `install.bat` once to create the Python environment and download dependencies/models.
-2. Run `run.bat` to launch the UI.
-3. Keep `Low-VRAM CPU offload` off for fastest repeated generations.
+1. Install Python 3.11, Git, and a CUDA-capable NVIDIA driver.
+2. Run `install.bat` once. It creates `venv`, installs pinned tested dependencies, clones Microsoft Lens, and downloads the model/kernel cache.
+3. Run `run.bat` to launch the UI.
+4. Keep `Low-VRAM CPU offload` off for fastest repeated generations.
+
+`setuptools` is pinned to tested version `70.2.0` because the CUDA PyTorch build requires `setuptools<82`; setup finishes with `pip check` so conflicts do not get ignored.
 
 Models, environments, package caches, output images, logs, and local saved prompts/settings are intentionally excluded from the source backup.

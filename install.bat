@@ -1,83 +1,56 @@
 @echo off
-setlocal enabledelayedexpansion
-chcp 65001 >nul
-
+setlocal
 cd /d "%~dp0"
-set "SCRIPT_DIR=%~dp0"
-
-IF EXIST "disclaimer.md" ( TYPE "disclaimer.md" & pause )
-IF EXIST "about.nfo" TYPE "about.nfo"
 
 echo.
-echo ================================================================
-echo  Lens Turbo SDNQ UINT4 -- Installer
-echo ================================================================
+echo Get Going Fast ^| Lens Turbo
+echo Simple local setup
 echo.
 
-:: Find Python
-set "BASE_PYTHON="
-for /f "usebackq delims=" %%P in (`py -3 -c "import sys; print(sys.executable)" 2^>nul`) do set "BASE_PYTHON=%%P"
-if not defined BASE_PYTHON for /f "usebackq delims=" %%P in (`where python 2^>nul`) do if not defined BASE_PYTHON set "BASE_PYTHON=%%P"
-if not defined BASE_PYTHON (
-    echo [ERROR] Python 3 not found. Install Python 3.10+ and rerun.
-    pause & exit /b 1
-)
-echo [OK] Python: %BASE_PYTHON%
-
-:: Create venv
 if not exist "venv\Scripts\python.exe" (
-    echo Creating virtual environment...
-    "%BASE_PYTHON%" -m venv venv
-    if errorlevel 1 ( echo [ERROR] venv creation failed. & pause & exit /b 1 )
+    echo Creating Python 3.11 virtual environment...
+    py -3.11 -m venv venv || goto :error
 )
 
-call venv\Scripts\activate
+set "PY=%CD%\venv\Scripts\python.exe"
+set "HF_HOME=%CD%\models\lens\hf_home"
+set "HF_HUB_CACHE=%CD%\models\lens\hf_cache"
+set "HUGGINGFACE_HUB_CACHE=%HF_HUB_CACHE%"
+set "HF_HUB_DISABLE_SYMLINKS_WARNING=1"
+set "TRANSFORMERS_CACHE=%CD%\models\lens\transformers_cache"
+set "HF_MODULES_CACHE=%CD%\models\lens\hf_modules"
+set "TRITON_CACHE_DIR=%CD%\models\lens\triton_cache"
+set "KERNELS_CACHE=%CD%\models\lens\kernels_cache"
+set "TORCH_HOME=%CD%\models\lens\torch_home"
 
-:: Redirect pip cache and temp to this drive -- prevents "no space" errors when C: is the default
-set "PIP_CACHE_DIR=%SCRIPT_DIR%pip_cache"
-set "TEMP=%SCRIPT_DIR%tmp"
-set "TMP=%SCRIPT_DIR%tmp"
-if not exist "%SCRIPT_DIR%tmp" mkdir "%SCRIPT_DIR%tmp"
+echo Installing Python packages...
+"%PY%" -m pip install --upgrade pip wheel || goto :error
+"%PY%" -m pip install "setuptools==70.2.0" || goto :error
+"%PY%" -m pip install "torch>=2.8.0,<2.12" torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 || goto :error
+"%PY%" -m pip install -r requirements.txt || goto :error
+"%PY%" -m pip install "setuptools==70.2.0" || goto :error
+"%PY%" -m pip check || goto :error
 
-python -m pip install --upgrade pip wheel setuptools
-
-:: PyTorch
-where nvidia-smi >nul 2>nul
-if not errorlevel 1 (
-    echo NVIDIA GPU detected -- installing CUDA PyTorch...
-    pip install "torch>=2.8.0" torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
-) else (
-    echo [WARN] NVIDIA GPU not detected. Lens Turbo requires CUDA. Installing CPU torch for setup only.
-    pip install torch torchvision torchaudio
-)
-if errorlevel 1 ( echo [ERROR] PyTorch install failed. & pause & exit /b 1 )
-
-:: Core deps
-pip install "diffusers>=0.35.1" "transformers>=4.57.1" accelerate safetensors huggingface_hub sentencepiece protobuf pillow numpy scipy einops peft tqdm PySide6
-if errorlevel 1 ( echo [ERROR] Dependency install failed. & pause & exit /b 1 )
-
-:: Quant / SDNQ stack
-pip install "triton-windows<3.7" kernels bitsandbytes sdnq
-if errorlevel 1 ( echo [ERROR] SDNQ/Triton install failed. & pause & exit /b 1 )
-
-:: Microsoft Lens repo ^(needed for LensPipeline^)
 if not exist "models\lens\repos\Lens\lens" (
-    echo Cloning Microsoft Lens repo...
-    git clone --depth 1 https://github.com/microsoft/Lens "models\lens\repos\Lens"
-    if errorlevel 1 ( echo [ERROR] Git clone failed. & pause & exit /b 1 )
+    echo Cloning Microsoft Lens...
+    git clone --depth 1 https://github.com/microsoft/Lens.git "models\lens\repos\Lens" || goto :error
 ) else (
-    echo Existing Lens repo found. Pulling latest...
-    cd /d "%SCRIPT_DIR%models\lens\repos\Lens"
-    git pull
-    cd /d "%SCRIPT_DIR%"
+    echo Microsoft Lens is already present.
 )
 
-if errorlevel 1 ( echo [ERROR] Lens package install failed. & pause & exit /b 1 )
+echo Downloading Lens Turbo model...
+"%PY%" -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='WaveCut/Lens-Turbo-SDNQ-uint4-static', cache_dir=r'%HF_HUB_CACHE%')" || goto :error
+
+echo Preparing quantized GPU kernels...
+"%PY%" -c "from kernels import get_kernel; get_kernel('kernels-community/gpt-oss-triton-kernels', version=1, trust_remote_code=True)" || goto :error
 
 echo.
-echo [OK] Install complete.
-echo      Run run.bat to launch the UI.
-echo      Run run_lens_test.bat to run a quick generation test.
-echo.
+echo Done. Run run.bat.
 pause
 exit /b 0
+
+:error
+echo.
+echo Install failed. See the error above.
+pause
+exit /b 1
