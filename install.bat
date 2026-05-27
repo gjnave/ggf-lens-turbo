@@ -48,10 +48,12 @@ if %errorlevel% neq 0 (
 echo Installing dependencies...
 python -m pip install --upgrade pip wheel
 python -m pip install setuptools==70.2.0
-python -m pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu124
+
+:: Install Torch 2.4.1 (Stable, includes torch.accelerator)
+python -m pip install torch==2.4.1+cu124 torchvision==0.19.1+cu124 torchaudio==2.4.1+cu124 --index-url https://download.pytorch.org/whl/cu124
 if %errorlevel% neq 0 (
-    echo [WARNING] Failed to install torch with cu124, trying default...
-    python -m pip install torch torchvision torchaudio
+    echo [WARNING] Failed to install torch with cu124, trying stable fallback...
+    python -m pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1
 )
 
 if exist "requirements.txt" (
