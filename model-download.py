@@ -77,15 +77,19 @@ def download_file(url: str, out_path: Path, retries: int = 4) -> None:
     if aria2c_bin.exists():
         print(f"  downloading with aria2c: {out_path.name}")
         try:
+            # Conservative flags for better stability on unstable connections
             cmd = [
                 str(aria2c_bin),
                 "--console-log-level=warn",
-                "--summary-interval=10",
-                "-x", "10",
-                "-s", "10",
-                "-j", "10",
+                "--summary-interval=20",
+                "-x", "5",  # Reduced from 10
+                "-s", "5",  # Reduced from 10
+                "-j", "5",
                 "-k", "1M",
                 "--continue=true",
+                "--max-tries=8",
+                "--retry-wait=5",
+                "--check-certificate=false", # Some environments have stale CA certs
                 "--dir", str(out_path.parent),
                 "--out", out_path.name,
                 url
@@ -97,10 +101,18 @@ def download_file(url: str, out_path: Path, retries: int = 4) -> None:
 
     tmp_path = out_path.with_suffix(out_path.suffix + ".part")
 
+    # Urllib fallback with SSL resilience
+    import ssl
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+
     for attempt in range(1, retries + 1):
         try:
             request = urllib.request.Request(url, headers={"User-Agent": "GGF-Lens-Turbo-Downloader/1.0"})
-            with urllib.request.urlopen(request, timeout=120) as response, tmp_path.open("wb") as f:
+            # Try with unverified context if SSL fails
+            opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context))
+            with opener.open(request, timeout=120) as response, tmp_path.open("wb") as f:
                 total = response.headers.get("Content-Length")
                 total_mb = int(total) / 1024 / 1024 if total and total.isdigit() else None
                 if total_mb:

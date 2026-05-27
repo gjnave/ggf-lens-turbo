@@ -68,3 +68,8 @@ echo.
 echo Install complete! Use run.bat to start the app.
 pause
 exit /b 0
+
+:error
+echo [ERROR] An error occurred during installation.
+pause
+exit /b 1
