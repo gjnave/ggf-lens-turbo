@@ -62,6 +62,20 @@ if exist "requirements.txt" (
     exit /b 1
 )
 
+:: Clone Lens Repository
+set "LENS_REPO_DIR=%CD%\models\lens\repos\Lens"
+if not exist "%LENS_REPO_DIR%" (
+    echo Cloning Microsoft Lens repository...
+    mkdir "%LENS_REPO_DIR%\.." 2>nul
+    git clone https://github.com/microsoft/Lens.git "%LENS_REPO_DIR%"
+    if %errorlevel% neq 0 (
+        echo [ERROR] Failed to clone Lens repository.
+        goto :error
+    )
+) else (
+    echo Lens repository already exists.
+)
+
 :: Download models
 if exist "download-models.bat" (
     echo Downloading models...
