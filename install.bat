@@ -3,9 +3,13 @@ setlocal enabledelayedexpansion
 chcp 65001 >nul
 cd /d "%~dp0"
 
-echo "Get Going Fast | Lens Turbo | Conda Installer"
+echo Get Going Fast | Lens Turbo | Conda Installer
 echo =============================================
 echo.
+
+set HF_HUB_DISABLE_XET=1
+set HF_HUB_DOWNLOAD_TIMEOUT=60
+set HF_HUB_ETAG_TIMEOUT=60
 
 :: Check for conda
 where conda >nul 2>nul
